@@ -7,19 +7,8 @@ import { ChartData } from 'chart.js';
 })
 export class DonutsComponent {
   @Input() title: string = 'Sin Título';
-  @Input('labels') doughnutChartLabels: string[] = [
-    'Label1',
-    'Label2',
-    'Label2',
-  ];
-
-  public doughnutChartData: ChartData<'doughnut'> = {
-    labels: this.doughnutChartLabels,
-    datasets: [
-      {
-        data: [350, 450, 100],
-        // backgroundColor: ['#ff6384', '#36a2eb', '#ffce56', '#cc65fe'],
-      },
-    ],
+  @Input('data') doughnutChartData: ChartData<'doughnut'> = {
+    labels: ['label1', 'label2', 'label3'],
+    datasets: [{ data: [350, 450, 100] }],
   };
 }
