@@ -7,6 +7,8 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { GraphicsComponent } from './graphics/graphics.component';
 import { ProgressComponent } from './progress/progress.component';
 import { AccountSettingsComponent } from './account-settings/account-settings.component';
+import { PromisesComponent } from './promises/promises.component';
+import { RxjsComponent } from './rxjs/rxjs.component';
 
 const routes: Routes = [
   {
@@ -17,6 +19,8 @@ const routes: Routes = [
       { path: 'graphics', component: GraphicsComponent },
       { path: 'progress', component: ProgressComponent },
       { path: 'settings', component: AccountSettingsComponent },
+      { path: 'promises', component: PromisesComponent },
+      { path: 'rxjs', component: RxjsComponent },
     ],
   },
 ];
