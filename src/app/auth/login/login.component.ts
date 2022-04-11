@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, NgZone, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+
 import { UserService } from 'src/app/services/user.service';
 import Swal from 'sweetalert2';
-
 declare const gapi: any;
 
 @Component({
@@ -15,7 +15,8 @@ export class LoginComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private userService: UserService,
-    private router: Router
+    private router: Router,
+    private ngZone: NgZone
   ) {}
 
   ngOnInit(): void {
@@ -27,27 +28,26 @@ export class LoginComponent implements OnInit {
   public auth2: any;
 
   public loginForm = this.fb.group({
-    email: [localStorage.getItem('email') || 'xtest05@gmail.com', [Validators.required, Validators.pattern(this.expression)]],
-    password: ['123456', [Validators.required]],
+    email: [localStorage.getItem('email') || '', [Validators.required, Validators.pattern(this.expression)]],
+    password: ['', [Validators.required]],
     remember: [false],
   });
 
+  // Iniciar Sesión
   login() {
-    this.userService.login(this.loginForm.value).subscribe(
-      (resp) => {
-        console.log(resp);
+    this.userService.login(this.loginForm.value).subscribe({
+      next: () => {
         if (this.loginForm.get('remember')?.value) {
           localStorage.setItem('email', this.loginForm.get('email')?.value);
         } else {
           localStorage.removeItem('email');
         }
-        // Navegar al Dashboard
         this.router.navigateByUrl('/');
       },
-      (err) => {
+      error: (err) => {
         Swal.fire('Error', err.error.msg, 'error');
-      }
-    );
+      },
+    });
   }
 
   // Rederizar el botón de Google
@@ -63,21 +63,21 @@ export class LoginComponent implements OnInit {
   }
 
   // Iniciar Sesión
-  startApp() {
-    gapi.load('auth2', () => {
-      this.auth2 = gapi.auth2.init({
-        client_id: '589211754571-agupdbke0r35mun9p8o9ag10336s7uid.apps.googleusercontent.com',
-        cookiepolicy: 'single_host_origin',
-      });
-      this.attachSignin(document.getElementById('my-signin2'));
-    });
+  async startApp() {
+    await this.userService.googleInit();
+    this.auth2 = this.userService.auth2;
+    this.attachSignin(document.getElementById('my-signin2'));
   }
 
   // Capturar el evento y enviar la respuesta
   attachSignin(element: any) {
     this.auth2.attachClickHandler(element, {}, (googleUser: any) => {
         const id_token = googleUser.getAuthResponse().id_token;
-        this.userService.loginGoogle(id_token).subscribe();
+        this.userService.loginGoogle(id_token).subscribe((resp) => {
+          this.ngZone.run(() => {
+            this.router.navigateByUrl('/');
+          });
+        });
       },
       (error: any) => {
         alert(JSON.stringify(error, undefined, 2));

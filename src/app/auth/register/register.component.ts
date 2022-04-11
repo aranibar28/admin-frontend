@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+
 import { UserService } from 'src/app/services/user.service';
-import Swal from 'sweetalert2'
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-register',
@@ -9,7 +11,11 @@ import Swal from 'sweetalert2'
   styleUrls: ['./register.component.scss'],
 })
 export class RegisterComponent {
-  constructor(private fb: FormBuilder, private userService: UserService) {}
+  constructor(
+    private fb: FormBuilder,
+    private userService: UserService,
+    private router: Router
+  ) {}
 
   public expression: string = '^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$';
   public formSubmitted = false;
@@ -38,10 +44,10 @@ export class RegisterComponent {
     // Realizar POST
     this.userService.createUser(this.registerForm.value).subscribe(
       (resp) => {
-        console.log(resp);
+        this.router.navigateByUrl('/');
       },
       (err) => {
-        Swal.fire("Error", err.error.msg, 'error')
+        Swal.fire('Error', err.error.msg, 'error');
       }
     );
   }
