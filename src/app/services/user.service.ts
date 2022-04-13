@@ -5,6 +5,7 @@ import { catchError, map, Observable, of, tap } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { LoginForm } from '../interfaces/login.form.interface';
 import { RegisterForm } from '../interfaces/register.form.interface';
+import { listUser } from '../interfaces/users.interface';
 import { User } from '../models/user.model';
 
 const base_url = environment.base_url;
@@ -32,6 +33,14 @@ export class UserService {
 
   get uid(): string {
     return this.user.uid || '';
+  }
+
+  get headers() {
+    return {
+      headers: {
+        token: this.token,
+      },
+    };
   }
 
   // Inicializar Google
@@ -109,5 +118,27 @@ export class UserService {
         token: this.token,
       },
     });
+  }
+
+  // Cargar Usuarios
+  getUsers(from: number = 0) {
+    const url = `${base_url}/users?from=${from}`;
+    return this.http.get<listUser>(url, this.headers).pipe(
+      map((resp) => {
+        const users = resp.users.map(
+          (user) =>
+            new User(
+              user.name,
+              user.email,
+              '',
+              user.image,
+              user.google,
+              user.role,
+              user.uid
+            )
+        );
+        return { total: resp.total, users };
+      })
+    );
   }
 }
