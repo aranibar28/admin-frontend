@@ -2,18 +2,18 @@
   <div class="col-12">
     <div class="card">
       <div class="card-body">
-        <input type="text" class="form-control" placeholder="Buscar Usuario" />
+        <input type="text" class="form-control" placeholder="Buscar Usuario" (keyup)="search(txtSearch.value)" #txtSearch />
       </div>
     </div>
   </div>
 </div>
 
-<div *ngIf="loading" class="row fadeIn fast text-center">
+<!-- <div *ngIf="loading" class="row fadeIn fast text-center">
   <i class="fa fa-spin fa-refresh fa-2x"></i>
   <p class="mb-0">Porfavor espere...</p>
-</div>
+</div> -->
 
-<div *ngIf="!loading" class="row fadeIn fast">
+<div class="row fadeIn fast">
   <div class="col-12">
     <div class="card">
       <div class="card-body">
@@ -27,7 +27,7 @@
                 <th class="w100">Imagen</th>
                 <th>Nombre</th>
                 <th>Correo</th>
-                <th class="w100">Role</th>
+                <th class="w140">Role</th>
                 <th class="w100">Auth</th>
                 <th class="text-nowrap w100">Acciones</th>
               </tr>
@@ -35,11 +35,16 @@
             <tbody>
               <tr *ngFor="let user of users">
                 <td class="text-center">
-                  <img [src]="user.imageUrl" class="img-photo" />
+                  <img [src]="user.imageUrl" class="img-photo pointer" (click)="openModal(user)" />
                 </td>
                 <td>{{ user.name }}</td>
                 <td>{{ user.email }}</td>
-                <td>{{ user.role }}</td>
+                <td>
+                  <select [(ngModel)]="user.role" (change)="changeRole(user)" class="form-control" >
+                    <option value="ADMIN_ROLE">Admin</option>
+                    <option value="USER_ROLE">User</option>
+                  </select>
+                </td>
                 <td>
                   <span *ngIf="user.google" class="label label-danger">
                     Google
@@ -49,23 +54,20 @@
                   </span>
                 </td>
                 <td class="text-nowrap text-center">
-                  <a href="#" data-toggle="tooltip" data-original-title="Edit">
-                    <i class="fa fa-pencil text-inverse m-r-10"></i>
-                  </a>
-                  <a href="#" data-toggle="tooltip" data-original-title="Close">
+                  <a (click)="deleteUser(user)" data-toggle="tooltip" data-original-title="Close">
                     <i class="fa fa-close text-danger"></i>
                   </a>
                 </td>
               </tr>
             </tbody>
           </table>
-          <div>
-            <div (click)="changePagination(-5)" class="btn btn-secondary mr-2">
+          <div *ngIf="txtSearch.value.length === 0">
+            <button (click)="changePagination(-5)" class="btn btn-secondary mr-2">
               Anteriores
-            </div>
-            <div (click)="changePagination(+5)" class="btn btn-secondary">
+            </button>
+            <button (click)="changePagination(+5)" class="btn btn-secondary">
               Siguientes
-            </div>
+            </button>
           </div>
         </div>
       </div>

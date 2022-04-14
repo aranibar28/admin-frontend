@@ -37,9 +37,7 @@ export class UserService {
 
   get headers() {
     return {
-      headers: {
-        token: this.token,
-      },
+      headers: { token: this.token },
     };
   }
 
@@ -113,11 +111,13 @@ export class UserService {
   // Actualizar Usuario
   updateUser(data: { email: string; name: string; role?: string }) {
     data = { ...data, role: this.user.role };
-    return this.http.put(`${base_url}/users/${this.uid}`, data, {
-      headers: {
-        token: this.token,
-      },
-    });
+    return this.http.put(`${base_url}/users/${this.uid}`, data, this.headers);
+  }
+
+  // Actualizar Rol Usuario
+  updateRole(user: User) {
+    //data = { ...data, role: this.user.role };
+    return this.http.put(`${base_url}/users/${user.uid}`, user, this.headers);
   }
 
   // Cargar Usuarios
@@ -140,5 +140,11 @@ export class UserService {
         return { total: resp.total, users };
       })
     );
+  }
+
+  // Eliminar Usuarios
+  deleteUser(user: User) {
+    const url = `${base_url}/users/${user.uid}`;
+    return this.http.delete<listUser>(url, this.headers);
   }
 }
