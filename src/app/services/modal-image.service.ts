@@ -22,7 +22,7 @@ export class ModalImageService {
   openModal(
     type: 'users' | 'medics' | 'hospitals',
     id: string,
-    image: string = 'user.png'
+    image: string = 'no-img.png'
   ) {
     this._hiddenModal = false;
     this.type = type;

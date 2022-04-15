@@ -2,6 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { Hospital } from '../models/hospital';
+import { Medic } from '../models/medic';
 import { User } from '../models/user.model';
 
 const base_url = environment.base_url;
@@ -27,6 +29,16 @@ export class SearchService {
     return result.map(user => new User(user.name, user.email, '', user.image, user.google, user.role, user.uid ));
   }
 
+  // Instanciar el arreglo Hospitales del objeto Resultados
+  private transformHospital(result: any[]): Hospital[] {
+    return result;
+  }
+
+  // Instanciar el arreglo Medicos del objeto Resultados
+  private transformMedic(result: any[]): Medic[] {
+    return result;
+  }
+
   // Buscar
   search(type: 'users' | 'medics' | 'hospitals', word: string) {
     const url = `${base_url}/search/collection/${type}/${word}`;
@@ -35,6 +47,10 @@ export class SearchService {
         switch (type) {
           case 'users':
             return this.transformUser(resp.result);
+          case 'hospitals':
+            return this.transformHospital(resp.result);
+          case 'medics':
+            return this.transformMedic(resp.result);
           default:
             return [];
         }

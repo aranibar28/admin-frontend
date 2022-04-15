@@ -95,6 +95,7 @@ export class UsersComponent implements OnInit, OnDestroy {
       return;
     } else if (this.from >= this.totalUsers) {
       this.from -= value;
+      return;
     }
     this.getUsers();
   }
@@ -104,7 +105,8 @@ export class UsersComponent implements OnInit, OnDestroy {
     if (words.length === 0) {
       return (this.users = this.usersTemp);
     }
-    return this.searchService.search('users', words).subscribe((result) => {
+
+    return this.searchService.search('users', words).subscribe((result:any[]) => {
       this.users = result;
     });
   }
