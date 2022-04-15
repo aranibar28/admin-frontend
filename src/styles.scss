@@ -24,14 +24,35 @@ a {
   margin-bottom: 5px;
 }
 
+.profile-pic{
+  height: 30px !important;
+}
+
 .img-avatar {
   width: 155px;
   height: 155px;
+  object-fit: cover;
+  margin-bottom: 15px;
+}
+
+.img-hospital2 {
+  width: 350px;
+  height: 180px;
+  object-fit: cover;
+  margin-bottom: 15px;
 }
 
 .img-photo {
   width: 50px;
+  height: 50px;
   border-radius: 5px;
+  object-fit: cover;
+}
+
+.img-hospital {
+  width: 80px;
+  height: 50px;
+  object-fit: cover;
 }
 
 .w100 {

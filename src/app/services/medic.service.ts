@@ -30,6 +30,7 @@ export class MedicService {
       .pipe(map((resp: { ok: boolean; medics: Medic[] }) => resp.medics));
   }
 
+  // Cargar Médico por ID
   getMedicById(id: string) {
     const url = `${base_url}/medics/${id}`;
     return this.http
@@ -46,7 +47,7 @@ export class MedicService {
   // Actualizar Médico
   updateMedic(medic: Medic) {
     const url = `${base_url}/medics/${medic._id}`;
-    return this.http.put(url, { medic }, this.headers);
+    return this.http.put(url, medic, this.headers);
   }
 
   // Borrar Médico

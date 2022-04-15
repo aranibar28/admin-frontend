@@ -1,15 +1,16 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { delay, Subscription } from 'rxjs';
+import Swal from 'sweetalert2';
+
+// Modelos y Servicios
 import { Medic } from 'src/app/models/medic';
 import { MedicService } from 'src/app/services/medic.service';
 import { ModalImageService } from 'src/app/services/modal-image.service';
 import { SearchService } from 'src/app/services/search.service';
-import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-medics',
   templateUrl: './medics.component.html',
-  styles: [],
 })
 export class MedicsComponent implements OnInit, OnDestroy {
   constructor(
@@ -76,6 +77,7 @@ export class MedicsComponent implements OnInit, OnDestroy {
     });
   }
 
+  // Actualizar Médico
   updateImageModal(medic: Medic) {
     this.modalImageService.openModal('medics', medic._id!, medic.image);
   }

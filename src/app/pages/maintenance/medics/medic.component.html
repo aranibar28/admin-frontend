@@ -6,11 +6,20 @@
                 <h6 class="card-subtitle">Actualizar Información</h6>
                 <form class="form-horizontal p-t-20" [formGroup]="medicForm" (submit)="saveMedic()">
 
+                    <div *ngIf="!medicSelected" class="form-group row">
+                        <label for="exampleInputuname3" class="col-sm-3 control-label">Foto</label>
+                        <div class="col-sm-9">
+                            <div class="input-group">
+                                <img class="img-avatar" src="http://localhost:3000/api/upload/medics/no-img.png" alt="">
+                            </div>
+                        </div>
+                    </div>
+
                     <div *ngIf="medicSelected" class="form-group row">
                         <label for="exampleInputuname3" class="col-sm-3 control-label">Foto</label>
                         <div class="col-sm-9">
                             <div class="input-group">
-                                <img class="w200" [src]="medicSelected!.image! | image: 'medics'" alt="">
+                                <img class="img-avatar" [src]="medicSelected!.image! | image: 'medics'" alt="">
                             </div>
                         </div>
                     </div>
@@ -53,7 +62,7 @@
                 <h4 class="card-title">Hospital</h4>
                 <h6 class="card-subtitle">Hospital {{hospitalSelected.name}}</h6>
                 <div class="text-center">
-                    <img class="w200" [src]="hospitalSelected.image! | image: 'hospitals'" alt="">
+                    <img class="img-hospital2" [src]="hospitalSelected.image! | image: 'hospitals'" alt="">
                 </div>
             </div>
         </div>
