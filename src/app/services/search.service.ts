@@ -39,6 +39,11 @@ export class SearchService {
     return result;
   }
 
+  globalSearch(term: string){
+    const url = `${base_url}/search/${term}`;
+    return this.http.get(url, this.headers)
+  }
+
   // Buscar
   search(type: 'users' | 'medics' | 'hospitals', word: string) {
     const url = `${base_url}/search/collection/${type}/${word}`;
