@@ -38,7 +38,7 @@ export class MedicComponent implements OnInit {
 
     this.getHospitals();
 
-    this.medicForm.get('hospital')?.valueChanges.subscribe((id) => {
+    this.medicForm.get('hospital')!.valueChanges.subscribe((id) => {
       this.hospitalSelected = this.hospitals.find(
         (hospital) => hospital._id === id
       );
@@ -78,7 +78,6 @@ export class MedicComponent implements OnInit {
       // Actualizar Médico
       const data = { ...this.medicForm.value, _id: this.medicSelected._id };
       this.medicService.updateMedic(data).subscribe((resp) => {
-        console.log(resp);
         Swal.fire('Actualizar', `${name} actualizado correctamente`, 'success');
       });
     } else {
