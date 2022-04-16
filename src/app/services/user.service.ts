@@ -94,6 +94,7 @@ export class UserService {
       );
   }
 
+  // Login Tradicional
   login(formData: LoginForm) {
     return this.http.post(`${base_url}/login`, formData).pipe(
       tap((resp: any) => {
@@ -102,6 +103,7 @@ export class UserService {
     );
   }
 
+  // Login Google
   loginGoogle(token: string) {
     return this.http.post(`${base_url}/login/google`, { token }).pipe(
       tap((resp: any) => {

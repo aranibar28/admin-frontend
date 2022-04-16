@@ -22,10 +22,10 @@ export class RegisterComponent {
 
   public registerForm = this.fb.group(
     {
-      name: ['Gerson Aranibar', [Validators.required, Validators.minLength(3)]],
-      email: ['xtest01@gmail.com', [Validators.required, Validators.pattern(this.expression)]],
-      password: ['123456', [Validators.required]],
-      password2: ['123456', [Validators.required]],
+      name: ['', [Validators.required, Validators.minLength(3)]],
+      email: ['', [Validators.required, Validators.pattern(this.expression)]],
+      password: ['', [Validators.required]],
+      password2: ['', [Validators.required]],
       terms: [false, [Validators.required]],
     },
     {
@@ -35,21 +35,21 @@ export class RegisterComponent {
 
   createUser() {
     this.formSubmitted = true;
-    console.log(this.registerForm.value);
 
     if (this.registerForm.invalid) {
       return;
     }
 
     // Realizar POST
-    this.userService.createUser(this.registerForm.value).subscribe(
-      (resp) => {
+    this.userService.createUser(this.registerForm.value).subscribe({
+      next: async () => {
+        await Swal.fire('Bienvenido', 'Usuario Creado', 'success');
         this.router.navigateByUrl('/');
       },
-      (err) => {
+      error: (err) => {
         Swal.fire('Error', err.error.msg, 'error');
-      }
-    );
+      },
+    });
   }
 
   invalidFied(data: string): boolean {
